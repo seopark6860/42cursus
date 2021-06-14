@@ -15,8 +15,11 @@ void		handle_aprecision(t_flags *flags, va_list ap)
 {
 	flags->star = 1;
 	flags->precision = va_arg(ap, int);
-	if (flags->precision < 0)
+	if (flags->precision < 0)		// precision 음수면 무시
+	{
 		flags->precision = -1;
+		flags->dot = 0;
+	}
 }
 
 const char	*handle_dot(const char *copy, t_flags *flags, va_list ap)
@@ -42,3 +45,5 @@ const char	*handle_dot(const char *copy, t_flags *flags, va_list ap)
 	flags->precision = num;
 	return (copy);
 }
+
+

@@ -6,26 +6,13 @@
 /*   By: seopark <seopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 20:18:05 by seopark           #+#    #+#             */
-/*   Updated: 2021/06/09 20:39:28 by seopark          ###   ########.fr       */
+/*   Updated: 2021/06/13 17:19:19 by seopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	ft_len(long long num)
-{
-	int cnt;
-
-	cnt = 0;
-	while (num)
-	{
-		num /= 10;
-		cnt++;
-	}
-	return (cnt);
-}
-
-static char	*ft_convert(int sign, int len, long long num)
+char	*ft_convert(int sign, int len, long long num)
 {
 	char	*res;
 
@@ -43,15 +30,13 @@ static char	*ft_convert(int sign, int len, long long num)
 	res[len--] = '\0';
 	while (num)
 	{
-//		if (!sign && len == 0)
-//			break ;
 		res[len--] = num % 10 + '0';
 		num /= 10;
 	}
 	return (res);
 }
 
-char		*ft_itoa(int n)
+char		*ft_itoa(long long n)
 {
 	char		*arr;
 	int			sign;
@@ -66,11 +51,11 @@ char		*ft_itoa(int n)
 	}
 	if (n == 0)
 	{
-		if (!(arr = (char *)malloc(sizeof(char) * 2)))
+		if (!(arr = (char *)malloc(sizeof(char) * 2)))	/////vvvvv
 			return (0);
 		arr[0] = '0';
 		arr[1] = '\0';
 		return (arr);
 	}
-	return (ft_convert(sign, ft_len(num), num));
+	return (ft_convert(sign, digit_len(num), num));
 }
