@@ -7,15 +7,17 @@ int main()
 
 //	void *ptr = &num;
 //	void *ptr;
-//	printf("|%p|\n", ptr);		
-//	printf("sizeof : %lu\n", sizeof(ptr));
-//	printf("|%8.4d|\n", -234);		
-//	printf("|%0.6d|\n", -234);		
-//	printf("|%06d|\n\n", -234);		
+//	printf("|%20.p|\n", NULL);		
+//	printf("|%-16.p|\n", NULL);		
+//	printf("|%20d|\n", -21);	
+//	printf("|%-16.20d|\n", 0);		
+//	printf("|%-16.20d|\n\n", 0);		
+//	printf("|%6.d|\n\n", 0);			
+	printf("|%p|\n\n", NULL);
 
-	long long num = 2147483649;
-	int n = num;
-	printf("n ; %d\n", n);
+//	long long num = 2147483649;
+//	int n = num;
+//	printf("n ; %d\n", n);
 /*
 	printf("|%.*c|\n", -2, 'c');		// |-0234   |
 	printf("|%8.4d|\n", -234);		// |   -0234|

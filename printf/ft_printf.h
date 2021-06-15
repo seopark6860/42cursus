@@ -6,7 +6,7 @@
 /*   By: seopark <seopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/04 15:25:45 by seopark           #+#    #+#             */
-/*   Updated: 2021/06/14 22:25:16 by seopark          ###   ########.fr       */
+/*   Updated: 2021/06/15 19:38:20 by seopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct  s_flags
     int precision;
     int star;
     int cnt;
+	int	p_add;
 }               t_flags;
 
 /*		ft_printf.c		*/
@@ -47,6 +48,7 @@ void		handle_int_width(t_flags *flags, char *str, int len, int negative);
 void		pre_handle_integer(t_flags *flags, char c, va_list ap);
 
 /*		print_string.c	*/
+void		print_str(t_flags *flgas, char *str);
 void		print_string(t_flags *flags, va_list ap);
 void		print_str_precision(t_flags *flags, char *str);
 void		print_str_width(t_flags *flags, char *str);
@@ -63,6 +65,7 @@ int			digit_len(long long num);
 /*		ft_output.c		*/
 void		print_width(t_flags *flags, int sign_zero);
 void		print_char(t_flags *flags, va_list ap);
+void		print_minus(t_flags *flags, int negative);
 
 /*		handle_flags.c	*/
 void		handle_awidth(t_flags *flags, va_list ap);
@@ -76,5 +79,15 @@ void		ft_recursive(char *hex_str, unsigned long long num, int cnt, int upper);
 
 /*		ft_itoa.c		*/
 char		*ft_itoa(long long n);
-char		*ft_convert(int sign, int len, long long num);
+char		*ft_convert(int len, long long num);
+
+
+/*		print_pointer.c	*/
+
+//void	print_pointer(t_flags *flags, char *str, unsigned long long	 p);
+void	print_pointer(t_flags *flags, char *str);
+int		handle_zero_num2(t_flags *flags);
+void	handle_int_width2(t_flags *flags, char *str, int len, int negative);	// p무시하고 출력
+void	print_str_width2(t_flags *flags, char *str);
+void	print_int_width2(t_flags *flags, char *str, int negative);
 #endif

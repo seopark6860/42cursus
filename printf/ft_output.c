@@ -13,6 +13,20 @@ void	print_width(t_flags *flags, int apply_zero)
 		ft_putchar(' ', flags);
 	}
 }
+void	print_minus(t_flags *flags, int negative)
+{
+	if (negative == 1)
+	{
+		ft_putchar('-', flags);
+	//	str++;
+		return ;
+	}
+//	else if (pointer == 1)
+//	{
+//		ft_putchar('0', flags);
+//		ft_putchar('x', flags);
+//	}
+}
 
 void	print_char(t_flags *flags, va_list ap)	// 문자 한개 출력
 {

@@ -1,5 +1,14 @@
 #include "ft_printf.h"
 
+
+void	print_str(t_flags *flgas, char *str)
+{
+	while (*str)
+	{
+		ft_putchar(*str, flgas);
+		str++;
+	}
+}
 void	print_str_precision(t_flags *flags, char *str)
 {
 	if (flags->width >= flags->precision)
@@ -31,23 +40,16 @@ void	print_str_width(t_flags *flags, char *str)
 {
 	if (flags->minus == 1)
 	{
-		while (*str)
-		{
-			ft_putchar(*str, flags);
-			str++;
-		}
+		print_str(flags, str);
 		print_width(flags, 0);
 	}
 	else
 	{
 		print_width(flags, 0);
-		while (*str)
-		{
-			ft_putchar(*str, flags);
-			str++;
-		}
+		print_str(flags, str);
 	}
 }
+
 void	print_string(t_flags *flags, va_list ap)
 {
 	char	*str;
@@ -75,22 +77,15 @@ void	print_string(t_flags *flags, va_list ap)
 	}
 }
 
+
 void	print_int_width(t_flags *flags, char *str, int negative)	// width, 출력할 문자 수 정해주기
 {
 	// width-len 공백 또는 0 출력
 	if (flags->minus == 1)
 	{
 		// 없어도 될듯..?
-		if (negative == 1)
-		{
-			ft_putchar('-', flags);
-			str++;
-		}
-		while (*str)			
-		{
-			ft_putchar(*str, flags);
-			str++;
-		}
+		print_minus(flags, negative);
+		print_str(flags, str);
 		print_width(flags, 0);		// 0, - 플래그 같이 못씀
 	}
 	else
@@ -99,26 +94,14 @@ void	print_int_width(t_flags *flags, char *str, int negative)	// width, 출력�
 		if (negative == 1 && flags->zero == 0)
 		{
 			print_width(flags, 1);
-			while (*str)
-			{	
-				ft_putchar(*str, flags);
-				str++;
-			}
+			print_minus(flags, negative);
+			print_str(flags, str);
 		}
 		else
 		{
-			if (negative == 1)
-			{
-				ft_putchar('-', flags);
-				str++;
-			}
+			print_minus(flags, negative);
 			print_width(flags, 1);
-			while (*str)
-			{
-				ft_putchar(*str, flags);
-				str++;
-			}
+			print_str(flags, str);
 		}
-		
 	}
 }

@@ -20,43 +20,27 @@ int	calc_num(char c, int num)
 
 void	handle_int_prec(t_flags *flags, char *str, int len, int negative)
 {
-	if (flags->precision > len)	// precision-len만큼 0으로 채움
+	if (flags->precision > len)					// precision-len만큼 0으로 채움
 	{		
 		if (flags->width >= flags->precision)	// w-p공백, p출력, len출력
 		{
 			flags->width -= flags->precision;
-			flags->precision -= len;		// precision - len만큼 0출력
+			flags->precision -= len;			// precision - len만큼 0출력
 			if (flags->minus == 1)
 			{
-				if (negative)
-				{
-					ft_putchar('-', flags);
-					str++;
-				}
+				print_minus(flags, negative);
 				while (flags->precision-- > 0)		// precision 0 출력
 					ft_putchar('0', flags);
-				while (*str)	// len 출력
-				{
-					ft_putchar(*str, flags);
-					str++;
-				}
+				print_str(flags, str);				// len 출력
 				print_width(flags, 0);		// width-precision 공백출력
 			}
 			else
 			{
 				print_width(flags, 1);		// width-precision 공백출력
-				if (negative)
-				{
-					ft_putchar('-', flags);
-					str++;
-				}
+				print_minus(flags, negative);
 				while (flags->precision-- > 0)	// precision 0 출력
 					ft_putchar('0', flags);
-				while (*str)		// len 출력
-				{
-					ft_putchar(*str, flags);
-					str++;
-				}
+				print_str(flags, str);	// len 출력
 			}
 		}
 		else		// width 무시 -> minus무시
@@ -66,33 +50,17 @@ void	handle_int_prec(t_flags *flags, char *str, int len, int negative)
 			flags->precision -= len;
 			if (flags->minus == 1)
 			{
-				if (negative)
-				{
-					ft_putchar('-', flags);
-					str++;
-				}
-				while (*str)
-				{
-					ft_putchar(*str, flags);
-					str++;
-				}
+				print_minus(flags, negative);
+				print_str(flags, str);
 				while (flags->precision-- > 0)	// precision 0 출력
-				ft_putchar('0', flags);
+					ft_putchar('0', flags);
 			}
 			else
 			{
-				if (negative)
-				{
-					ft_putchar('-', flags);
-					str++;
-				}
+				print_minus(flags, negative);
 				while (flags->precision-- > 0)	// precision 0 출력
 					ft_putchar('0', flags);
-				while (*str)
-				{
-					ft_putchar(*str, flags);
-					str++;
-				}
+				print_str(flags, str);
 			}	
 		}	 
 	}
@@ -109,7 +77,18 @@ void	handle_int_width(t_flags *flags, char *str, int len, int negative)	// p무�
 	{
 		flags->width = 0;
 		flags->minus = 0;
-		print_str_width(flags, str);
+		if (flags->minus == 1)
+		{
+			print_minus(flags, negative);
+			print_str(flags, str);
+			print_width(flags, 0);
+		}
+		else
+		{
+			print_width(flags, 0);
+			print_minus(flags, negative);
+			print_str(flags, str);
+		}
 	}
 	else		// width-len 공백출력
 	{
@@ -139,40 +118,25 @@ int	handle_zero_num(t_flags *flags, char *str)
 	return (1);
 }
 
-void	pre_handle_integer(t_flags *flags, char c, va_list ap)
+void	handle_integer(t_flags *flags, char c, char *str, long long num)
 {
-	long long			num;
-	char 				*str;
-	int					len;
-	int					negative;
-	unsigned long long	 p;
+	int len;
+	int	negative;
 
-	if (c == 'd' || c == 'i')
-		num = va_arg(ap, int);
-	if (c == 'u' || c == 'x' || c == 'X')
-		num = va_arg(ap, unsigned int);
 	str = ft_itoa(num);
 	if (c == 'x' || c == 'X')
 	{
 		free(str);
 		str = handle_hex(c, (unsigned long long)num);
 	}
-	if (c == 'p')
-	{
-		free(str);
-		p = (unsigned long long)va_arg(ap, void *);	
-		str = handle_hex('x', p);
-	//	handle_pointer(flags, str, num ap)
-	}
 	len = ft_strlen(str);
 	negative = 0;
 	if (num < 0)
 	{
-		len--;
 		negative = 1;
 		flags->width--;		// width는 -부호 한공간으로 vvvvvvv
 	}
-	if (num == 0 || p == 0)
+	if (num == 0)
 	{
 		if (handle_zero_num(flags, str) == 0)
 			return ;
@@ -182,6 +146,31 @@ void	pre_handle_integer(t_flags *flags, char c, va_list ap)
 	else		// 정밀도 있을 때
 		handle_int_prec(flags, str, len, negative);
 	free(str);
+}
+
+void	pre_handle_integer(t_flags *flags, char c, va_list ap)
+{
+	long long			num;
+	char 				*str;
+	unsigned long long	 p;
+
+	p = -1;
+	num = 0;
+	str = "";
+	if (c == 'p')
+	{
+		p = (unsigned long long)va_arg(ap, void *);	
+		str = handle_hex('x', p);
+//		print_pointer(flags, str, p);
+		print_pointer(flags, str);
+		free(str);
+		return ;
+	}
+	else if (c == 'd' || c == 'i')
+		num = va_arg(ap, int);
+	else if (c == 'u' || c == 'x' || c == 'X')
+		num = va_arg(ap, unsigned int);
+	handle_integer(flags, c, str, num);
 }
 
 void	check_specifier(const char *copy, t_flags *flags, va_list ap)
@@ -217,7 +206,8 @@ const char *check_flags(const char *copy, t_flags *flags, va_list ap)
 
 	result = flags->cnt;
 	init_flags(flags, result);	
-	while (is_spec(*copy) == 0)		// 서식지정자 나오기 전까지 플래그 체크
+//	while (is_spec(*copy) == 0)		// 서식지정자 나오기 전까지 플래그 체크
+	while (is_spec(*copy) == 0)
 	{
 		if (*copy == '-')
 			flags->minus = 1;
@@ -231,10 +221,7 @@ const char *check_flags(const char *copy, t_flags *flags, va_list ap)
 			break;
 		}
 		else if (is_digit(*copy) && flags->star != 1)	// *없이 숫자 나오면 폭
-		{
-			//flags->width = calc_num(*copy, flags->width);
 			copy = calc_width(flags, copy);
-		}
 		copy++;
 	}
 	if ((flags->minus == 1 && flags->zero == 1) || (flags->dot == 1 && flags->zero == 1))	// 0 플래그 -, .같이 쓰이면 무시

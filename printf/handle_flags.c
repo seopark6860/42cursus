@@ -32,7 +32,7 @@ const char	*handle_dot(const char *copy, t_flags *flags, va_list ap)
 	/* .뒤는 숫자 / 서식지정자 / * 이기 때문에 */
 	while (is_spec(*copy) != 1)		// 서식지정자가 아니면 그전까지 읽어서 정밀도 값 계산
 	{
-		if (*copy == '*') 	// *만나면 handle_awidth()
+		if (*copy == '*')
 		{
 			handle_aprecision(flags, ap);
 			copy++;

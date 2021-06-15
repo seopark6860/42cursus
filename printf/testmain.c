@@ -6,14 +6,17 @@ int		main()
 {
 //	printf("\n------d--------\n");
 
-	int *p;
-	p = NULL;
-	int res1 = ft_printf(" %-4.d ", -135);	
-	int res2 = printf(" %-4.d ", -135);
-//	int res1 = ft_printf("|%010d|\n", 2134);
-//	int res2 = printf("|%010d|\n", 2134);
-//	int res3 = ft_printf("|0*%0*.10d|\n",  21, -2147483648);
-//	int res4 = printf("|0*%0*.10d\n", 21, -2147483648);
+
+	int res1 = ft_printf("|%-16.*p|\n", -1, 0);
+	int res2 = printf("|%-16.*p|\n", -1, 0);
+	int res1 = ft_printf("|%-16.*p|\n", 0, 0);
+	int res2 = printf("|%-16.*p|\n", 0, 0);
+	
+
+//	int res1 = ft_printf("|%-4.x|\n", 4294967161);
+//	int res2 = printf("|%-4.x|\n", 4294967161);
+//	int res1 = ft_printf("|%-16.d|\n", 0);
+//	int res2 = printf("|%-16.d|\n", 0);
 
 //	printf("\n------s--------\n");
 //	int res1 = ft_printf("|%s|\n", 0);	

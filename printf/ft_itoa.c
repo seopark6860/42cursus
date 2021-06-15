@@ -6,27 +6,20 @@
 /*   By: seopark <seopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/10 20:18:05 by seopark           #+#    #+#             */
-/*   Updated: 2021/06/13 17:19:19 by seopark          ###   ########.fr       */
+/*   Updated: 2021/06/15 18:25:07 by seopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*ft_convert(int sign, int len, long long num)
+char	*ft_convert(int len, long long num)
 {
 	char	*res;
 
-	if (sign)
-		res = (char *)malloc(sizeof(char) * (len + 1));
-	else
-		res = (char *)malloc(sizeof(char) * (len + 2));
+
+	res = (char *)malloc(sizeof(char) * (len + 1));
 	if (!res)
 		return (0);
-	if (!sign)
-	{
-		len += 1;
-		res[0] = '-';
-	}
 	res[len--] = '\0';
 	while (num)
 	{
@@ -47,7 +40,6 @@ char		*ft_itoa(long long n)
 	if (n < 0)
 	{
 		num *= -1;
-		sign = 0;
 	}
 	if (n == 0)
 	{
@@ -57,5 +49,5 @@ char		*ft_itoa(long long n)
 		arr[1] = '\0';
 		return (arr);
 	}
-	return (ft_convert(sign, digit_len(num), num));
+	return (ft_convert(digit_len(num), num));
 }
