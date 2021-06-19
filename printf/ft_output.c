@@ -1,8 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_output.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seopark <seopark@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/19 14:12:30 by seopark           #+#    #+#             */
+/*   Updated: 2021/06/19 14:34:50 by seopark          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
+
+void	print_char(t_flags *flags, va_list ap)
+{
+	flags->width--;
+	if (flags->minus == 1)
+	{
+		ft_putchar(va_arg(ap, int), flags);
+		print_width(flags, 0);
+	}
+	else if (flags->width > 0)
+	{
+		print_width(flags, 0);
+		ft_putchar(va_arg(ap, int), flags);
+	}
+	else
+		ft_putchar(va_arg(ap, int), flags);
+}
 
 void	print_width(t_flags *flags, int apply_zero)
 {
-	if (apply_zero == 1 && flags->zero == 1) 	// apply_zero == 1이면 공백을 0으로 채움. c,s는 flag->zero=1이더라도 apply_zero=0으로 들어옴
+	if (apply_zero == 1 && flags->zero == 1)
 	{
 		while (flags->width-- > 0)
 			ft_putchar('0', flags);
@@ -13,34 +42,29 @@ void	print_width(t_flags *flags, int apply_zero)
 		ft_putchar(' ', flags);
 	}
 }
+
 void	print_minus(t_flags *flags, int negative)
 {
 	if (negative == 1)
 	{
 		ft_putchar('-', flags);
-	//	str++;
 		return ;
 	}
-//	else if (pointer == 1)
-//	{
-//		ft_putchar('0', flags);
-//		ft_putchar('x', flags);
-//	}
 }
 
-void	print_char(t_flags *flags, va_list ap)	// 문자 한개 출력
+void	print_percent(t_flags *flags)
 {
-	flags->width--;				
-	if (flags->minus == 1)		// -플래그이면 문자한개 먼저 출력하고 
+	flags->width--;
+	if (flags->minus == 1)
 	{
-		ft_putchar(va_arg(ap, int), flags);
-		print_width(flags, 0);	// 공백 출력
+		ft_putchar('%', flags);
+		print_width(flags, 1);
 	}
-	else if (flags->width > 0)		// 폭이 1보다 크면 공백먼저 출력하고 
+	else if (flags->width > 0)
 	{
-		print_width(flags, 0);
-		ft_putchar(va_arg(ap, int), flags); // 문자출력
+		print_width(flags, 1);
+		ft_putchar('%', flags);
 	}
 	else
-		ft_putchar(va_arg(ap, int), flags);
+		ft_putchar('%', flags);
 }

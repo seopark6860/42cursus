@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_flags.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seopark <seopark@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/19 14:12:40 by seopark           #+#    #+#             */
+/*   Updated: 2021/06/19 15:03:48 by seopark          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-void		handle_awidth(t_flags *flags, va_list ap)	// *플래그 만났을 때 width
+void		handle_awidth(t_flags *flags, va_list ap)
 {
 	flags->star = 1;
 	flags->width = va_arg(ap, int);
@@ -15,7 +27,7 @@ void		handle_aprecision(t_flags *flags, va_list ap)
 {
 	flags->star = 1;
 	flags->precision = va_arg(ap, int);
-	if (flags->precision < 0)		// precision 음수면 무시
+	if (flags->precision < 0)
 	{
 		flags->precision = -1;
 		flags->dot = 0;
@@ -29,8 +41,9 @@ const char	*handle_dot(const char *copy, t_flags *flags, va_list ap)
 	copy++;
 	flags->dot = 1;
 	num = 0;
-	/* .뒤는 숫자 / 서식지정자 / * 이기 때문에 */
-	while (is_spec(*copy) != 1)		// 서식지정자가 아니면 그전까지 읽어서 정밀도 값 계산
+	while (*copy != 'c' && *copy != 's' && *copy != 'p' && *copy != 'd' &&
+		*copy != 'i' && *copy != 'u' && *copy != 'x' &&
+			*copy != 'X' && *copy != '%')
 	{
 		if (*copy == '*')
 		{
@@ -38,12 +51,10 @@ const char	*handle_dot(const char *copy, t_flags *flags, va_list ap)
 			copy++;
 			return (copy);
 		}
-		else	// 숫자이면 
+		else
 			num = calc_num(*copy, num);
 		copy++;
 	}
 	flags->precision = num;
 	return (copy);
 }
-
-

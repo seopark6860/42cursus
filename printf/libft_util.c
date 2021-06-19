@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft_util.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: seopark <seopark@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/06/19 14:12:51 by seopark           #+#    #+#             */
+/*   Updated: 2021/06/19 15:00:17 by seopark          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-int	ft_strlen(const char *str)
+int		printf_strlen(const char *str)
 {
 	int i;
 
@@ -18,22 +30,20 @@ void	ft_putchar(char c, t_flags *flags)
 	flags->cnt++;
 }
 
-int is_digit(char c)
+int		is_digit(char c)
 {
 	if ('0' <= c && c <= '9')
 		return (1);
 	return (0);
 }
 
-int	is_spec(char c)
+int		calc_num(char c, int num)
 {
-	if (c == 'c' || c == 's' || c == 'p' || c == 'd' || 
-	c == 'i' || c == 'u' || c == 'x' || c == 'X')
-		return (1);
-	return (0);
+	num = (num * 10) + (c - '0');
+	return (num);
 }
 
-int	digit_len(long long num)
+int		digit_len(long long num)
 {
 	int cnt;
 
