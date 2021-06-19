@@ -6,7 +6,7 @@
 /*   By: seopark <seopark@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/19 14:13:01 by seopark           #+#    #+#             */
-/*   Updated: 2021/06/19 15:29:47 by seopark          ###   ########.fr       */
+/*   Updated: 2021/06/19 17:00:43 by seopark          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	print_pointer_prec(t_flags *flags, char *str)
 	{
 		ft_putchar('0', flags);
 		ft_putchar('x', flags);
+		while (flags->precision-- > 0)
+			ft_putchar('0', flags);
 		print_str(flags, str);
 		print_width(flags, 0);
 	}
@@ -44,6 +46,8 @@ void	print_pointer_prec(t_flags *flags, char *str)
 		print_width(flags, 1);
 		ft_putchar('0', flags);
 		ft_putchar('x', flags);
+		while (flags->precision-- > 0)
+			ft_putchar('0', flags);
 		print_str(flags, str);
 	}
 }
